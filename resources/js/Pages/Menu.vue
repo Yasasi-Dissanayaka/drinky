@@ -98,6 +98,35 @@ const filteredDrinks = computed(() => {
         drink => drink.category === selectedCategory.value
     )
 })
+const addToCart = (drink) => {
+    const cart = JSON.parse(
+        localStorage.getItem('drinky_cart') || '[]'
+    )
+
+    const existingItem = cart.find(
+        item => item.id === drink.id
+    )
+
+    if (existingItem) {
+        existingItem.quantity++
+    } else {
+        cart.push({
+            id: drink.id,
+            name: drink.name,
+            category: drink.category,
+            price: drink.price,
+            quantity: 1,
+            icon: drink.icon
+        })
+    }
+
+    localStorage.setItem(
+        'drinky_cart',
+        JSON.stringify(cart)
+    )
+
+    alert(`${drink.name} added to cart!`)
+}
 </script>
 
 <template>
@@ -294,7 +323,10 @@ const filteredDrinks = computed(() => {
                                     View Details
                                 </Link>
 
-                                <button class="add-button">
+                                <button
+                                    class="add-button"
+                                    @click="addToCart(drink)"
+                                >
                                     +
                                 </button>
 

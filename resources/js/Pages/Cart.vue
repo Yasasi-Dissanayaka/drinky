@@ -1,43 +1,56 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
-const cartItems = ref([
-    {
-        id: 1,
-        name: 'Mango Blast',
-        category: 'Smoothies',
-        price: 650,
-        quantity: 1,
-        icon: '🥭',
-    },
-    {
-        id: 2,
-        name: 'Berry Fresh',
-        category: 'Fresh Juices',
-        price: 700,
-        quantity: 2,
-        icon: '🍓',
-    },
-])
+const cartItems = ref([])
+
+onMounted(() => {
+    const savedCart = localStorage.getItem('drinky_cart')
+
+    if (savedCart) {
+        cartItems.value = JSON.parse(savedCart)
+    }
+})
+
+const loadCart = () => {
+    const savedCart = localStorage.getItem('drinky_cart')
+
+    if (savedCart) {
+        cartItems.value = JSON.parse(savedCart)
+    }
+}
+
+const saveCart = () => {
+    localStorage.setItem(
+        'drinky_cart',
+        JSON.stringify(cartItems.value)
+    )
+}
 
 const increaseQuantity = (item) => {
     item.quantity++
+    saveCart()
 }
 
 const decreaseQuantity = (item) => {
     if (item.quantity > 1) {
         item.quantity--
+        saveCart()
     }
 }
 
 const removeItem = (id) => {
-    cartItems.value = cartItems.value.filter(item => item.id !== id)
+    cartItems.value = cartItems.value.filter(
+        item => item.id !== id
+    )
+
+    saveCart()
 }
 
 const subtotal = computed(() => {
     return cartItems.value.reduce(
-        (total, item) => total + item.price * item.quantity,
+        (total, item) =>
+            total + item.price * item.quantity,
         0
     )
 })
@@ -48,6 +61,10 @@ const deliveryFee = computed(() => {
 
 const total = computed(() => {
     return subtotal.value + deliveryFee.value
+})
+
+onMounted(() => {
+    loadCart()
 })
 </script>
 
