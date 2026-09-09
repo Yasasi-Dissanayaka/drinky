@@ -39,6 +39,12 @@ Route::get('/contact', function () {
     return Inertia::render('Contact');
 })->name('contact');
 
+// Cart
+Route::get('/cart', function () {
+    return Inertia::render('Cart');
+})->name('cart');
+
+
 
 
 /*
