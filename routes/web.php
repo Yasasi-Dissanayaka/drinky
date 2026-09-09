@@ -49,6 +49,13 @@ Route::get('/checkout', function () {
     return Inertia::render('Checkout');
 })->name('checkout');
 
+// Order Tracking
+Route::get('/orders/{order}', function ($order) {
+    return Inertia::render('OrderTracking', [
+        'order' => $order,
+    ]);
+})->name('orders.tracking');
+
 
 /*
 |--------------------------------------------------------------------------
