@@ -22,6 +22,12 @@ Route::get('/menu', function () {
     return Inertia::render('Menu');
 })->name('menu');
 
+// About
+Route::get('/about', function () {
+    return Inertia::render('About');
+})->name('about');
+
+
 /*
 |--------------------------------------------------------------------------
 | Dashboard
