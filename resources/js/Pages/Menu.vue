@@ -22,6 +22,7 @@ const drinks = [
         description: 'Creamy mango smoothie with a fresh tropical taste.',
         price: 650,
         icon: '🥭',
+        image:'/images/mango blast.png',
         popular: true,
     },
     {
@@ -31,7 +32,9 @@ const drinks = [
         description: 'A refreshing mix of fresh berries and fruit.',
         price: 700,
         icon: '🍓',
+        image:'/images/berry fresh.png',
         popular: true,
+        
     },
     {
         id: 3,
@@ -40,7 +43,9 @@ const drinks = [
         description: 'Rich chocolate milkshake topped with creamy goodness.',
         price: 750,
         icon: '🍫',
+        image:'/images/choco blast.png',
         popular: false,
+        
     },
     {
         id: 4,
@@ -49,7 +54,9 @@ const drinks = [
         description: 'Fresh pineapple juice with a bright tropical flavour.',
         price: 600,
         icon: '🍍',
+        image:'/images/pinapple splash.png',
         popular: false,
+        
     },
     {
         id: 5,
@@ -58,6 +65,7 @@ const drinks = [
         description: 'Sweet strawberries blended with smooth creamy milk.',
         price: 700,
         icon: '🍓',
+        image:'/images/Strawberry Cream.png',
         popular: true,
     },
     {
@@ -67,6 +75,7 @@ const drinks = [
         description: 'Smooth and rich coffee made for your everyday moment.',
         price: 450,
         icon: '☕',
+        image:'/images/Classic Coffee.png',
         popular: false,
     },
     {
@@ -76,6 +85,7 @@ const drinks = [
         description: 'Refreshing iced tea with a sweet peach flavour.',
         price: 500,
         icon: '🍑',
+        image:'/images/Peach Iced Tea.png',
         popular: false,
     },
     {
@@ -85,6 +95,17 @@ const drinks = [
         description: 'A cool and refreshing lime drink with a citrus kick.',
         price: 450,
         icon: '🍋',
+        image:'/images/Lime Cooler.png',
+        popular: true,
+    },
+    {
+        id: 9,
+        name: 'Mix Fruit',
+        category: 'Fresh Juices',
+        description: 'Creamy mango smoothie with a fresh tropical taste.',
+        price: 650,
+        icon: '🥭',
+        image:'/images/fresh juice.png',
         popular: true,
     },
 ]
@@ -282,7 +303,17 @@ const addToCart = (drink) => {
                                 ⭐ Popular
                             </span>
 
-                            <span class="drink-emoji">
+                            <img
+                                v-if="drink.image"
+                                :src="drink.image"
+                                :alt="drink.name"
+                                class="drink-real-image"
+                            />
+
+                            <span
+                                v-else
+                                class="drink-emoji"
+                            >
                                 {{ drink.icon }}
                             </span>
 
@@ -492,6 +523,12 @@ const addToCart = (drink) => {
     color: #17251d;
     text-decoration: none;
     letter-spacing: -1.5px;
+}
+.drink-real-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .menu-logo span,
