@@ -17,6 +17,11 @@ Route::get('/', function () {
     return Inertia::render('Home/Home');
 })->name('home');
 
+// Menu
+Route::get('/menu', function () {
+    return Inertia::render('Menu');
+})->name('menu');
+
 /*
 |--------------------------------------------------------------------------
 | Dashboard
