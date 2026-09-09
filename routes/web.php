@@ -22,6 +22,13 @@ Route::get('/menu', function () {
     return Inertia::render('Menu');
 })->name('menu');
 
+// Drink Details
+Route::get('/menu/{drink}', function ($drink) {
+    return Inertia::render('DrinkDetails', [
+        'drink' => $drink,
+    ]);
+})->name('drink.details');
+
 // About
 Route::get('/about', function () {
     return Inertia::render('About');
