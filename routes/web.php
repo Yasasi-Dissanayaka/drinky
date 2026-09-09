@@ -44,7 +44,10 @@ Route::get('/cart', function () {
     return Inertia::render('Cart');
 })->name('cart');
 
-
+// Checkout
+Route::get('/checkout', function () {
+    return Inertia::render('Checkout');
+})->name('checkout');
 
 
 /*
