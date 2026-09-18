@@ -22,6 +22,7 @@ const drinks = [
         category: 'Fresh Juices',
         price: 650,
         emoji: '🥭',
+        image:'/images/mango blast.png',
         description:
             'A refreshing mango drink made with sweet, juicy mangoes. Perfect for a hot day or whenever you need a tropical boost.',
         ingredients: [
@@ -40,6 +41,7 @@ const drinks = [
         category: 'Smoothies',
         price: 700,
         emoji: '🍓',
+        image:'/images/berry fresh.png',
         description:
             'A delicious blend of fresh berries and creamy goodness. Smooth, fruity and packed with flavour.',
         ingredients: [
@@ -58,6 +60,7 @@ const drinks = [
         category: 'Milkshakes',
         price: 750,
         emoji: '🍫',
+        image:'/images/choco blast.png',
         description:
             'A rich and creamy chocolate milkshake made for serious chocolate lovers.',
         ingredients: [
@@ -76,6 +79,7 @@ const drinks = [
         category: 'Fresh Juices',
         price: 600,
         emoji: '🍍',
+        image:'/images/pinapple splash.png',
         description:
             'A bright and refreshing pineapple drink with a naturally sweet and tropical flavour.',
         ingredients: [
@@ -93,6 +97,7 @@ const drinks = [
         category: 'Milkshakes',
         price: 700,
         emoji: '🍓',
+        image: '/images/drinks/strawberry-cream.jpg',
         description:
             'A creamy strawberry favourite made with sweet strawberries and smooth milk.',
         ingredients: [
@@ -111,6 +116,7 @@ const drinks = [
         category: 'Coffee',
         price: 450,
         emoji: '☕',
+        image: '/images/drinks/classic-coffee.jpg',
         description:
             'A smooth classic coffee with a rich aroma and balanced flavour.',
         ingredients: [
@@ -128,6 +134,7 @@ const drinks = [
         category: 'Tea',
         price: 500,
         emoji: '🍑',
+        image: '/images/drinks/peach-iced-tea.jpg',
         description:
             'Refreshing iced tea with a sweet peach flavour. Light, fruity and refreshing.',
         ingredients: [
@@ -146,6 +153,7 @@ const drinks = [
         category: 'Iced Drinks',
         price: 450,
         emoji: '🍋',
+        image: '/images/drinks/lime-cooler.jpg',
         description:
             'A refreshing lime cooler with a bright citrus flavour and plenty of ice.',
         ingredients: [
@@ -339,9 +347,11 @@ const relatedDrinks = computed(() => {
                     </span>
 
 
-                    <div class="large-drink">
-                        {{ selectedDrink.emoji }}
-                    </div>
+                    <img
+                        class="large-drink"
+                        :src="selectedDrink.image"
+                        :alt="selectedDrink.name"
+                    >
 
 
                     <div class="fruit-decoration fruit-one">
@@ -549,7 +559,11 @@ const relatedDrinks = computed(() => {
                 >
 
                     <div class="related-image">
-                        {{ drink.emoji }}
+
+                        <img
+                            :src="drink.image"
+                            :alt="drink.name"
+                        >
 
                         <span
                             v-if="drink.popular"
@@ -891,7 +905,11 @@ const relatedDrinks = computed(() => {
 
     z-index: 2;
 
-    font-size: 190px;
+    width: 320px;
+
+    height: 320px;
+
+    object-fit: contain;
 
     filter:
         drop-shadow(
@@ -1394,7 +1412,15 @@ const relatedDrinks = computed(() => {
 
     background: #edf6ef;
 
-    font-size: 90px;
+    overflow: hidden;
+}
+
+.related-image img {
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
 }
 
 .mini-badge {
@@ -1684,7 +1710,8 @@ const relatedDrinks = computed(() => {
     }
 
     .large-drink {
-        font-size: 130px;
+        width: 220px;
+        height: 220px;
     }
 
     .fruit-decoration {
