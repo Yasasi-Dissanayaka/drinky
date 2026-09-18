@@ -129,6 +129,12 @@ a:focus-visible {
     right: 0;
     z-index: 50;
     width: 100%;
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px rgba(23, 37, 29, 0.08);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .nav-inner {
@@ -208,7 +214,8 @@ a:focus-visible {
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: #17251d;
+    background: rgba(23, 37, 29, 0.85);
+    backdrop-filter: blur(4px);
     cursor: pointer;
     flex: none;
 }
@@ -237,8 +244,11 @@ a:focus-visible {
 .mobile-nav {
     max-height: 0;
     overflow: hidden;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.08);
+    border-top: 1px solid rgba(255, 255, 255, 0.35);
     transition: max-height 0.3s ease;
 }
 

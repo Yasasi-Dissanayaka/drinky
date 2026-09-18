@@ -34,20 +34,29 @@ const featuredDrinks = [
     {
         name: 'Mango Blast',
         category: 'Smoothie',
+        description: 'A tropical burst of fresh mangoes blended to perfection.',
         price: 'Rs. 650',
-        icon: '🥭',
+        image: '/images/mango-blast.png',
+        tag: 'Tropical Goodness',
+        theme: 'yellow',
     },
     {
         name: 'Berry Fresh',
         category: 'Fresh Juice',
+        description: 'A refreshing mix of strawberries and seasonal berries.',
         price: 'Rs. 700',
-        icon: '🍓',
+        image: '/images/berry-fresh.png',
+        tag: 'Berry Good Vibes',
+        theme: 'pink',
     },
     {
         name: 'Choco Dream',
         category: 'Milkshake',
+        description: 'Rich chocolate blended into a smooth, creamy delight.',
         price: 'Rs. 750',
-        icon: '🍫',
+        image: '/images/choco-dream.png',
+        tag: 'Pure Indulgence',
+        theme: 'brown',
     },
 ]
 </script>
@@ -256,7 +265,7 @@ const featuredDrinks = [
 
 
         <!-- FEATURED DRINKS -->
-        <section class="section section-dark">
+        <section class="section section-dark featured-section">
             <div class="container">
 
                 <div class="section-head">
@@ -266,9 +275,13 @@ const featuredDrinks = [
                         </p>
 
                         <h2 class="section-title">Drinks worth trying.</h2>
+
+                        <p class="featured-subtitle">
+                            Refreshing flavours, made for every mood.
+                        </p>
                     </div>
 
-                    <Link href="/menu" class="section-link section-link-gold">
+                    <Link href="/menu" class="section-link section-link-gold featured-see-all">
                         See full menu →
                     </Link>
                 </div>
@@ -279,22 +292,32 @@ const featuredDrinks = [
                         v-for="drink in featuredDrinks"
                         :key="drink.name"
                         class="featured-card"
+                        :class="`featured-card--${drink.theme}`"
                     >
-                        <div class="featured-image">{{ drink.icon }}</div>
-
                         <div class="featured-body">
 
                             <p class="featured-category">{{ drink.category }}</p>
 
-                            <div class="featured-row">
-                                <h3 class="featured-name">{{ drink.name }}</h3>
-                                <span class="featured-price">{{ drink.price }}</span>
-                            </div>
+                            <h3 class="featured-name">{{ drink.name }}</h3>
+
+                            <p class="featured-description">{{ drink.description }}</p>
+
+                            <p class="featured-price">{{ drink.price }}</p>
 
                             <Link href="/menu" class="featured-button">
+                                <span class="featured-button-icon">🛒</span>
                                 Add to order
                             </Link>
 
+                        </div>
+
+                        <div class="featured-visual">
+                            <span class="featured-tag">{{ drink.tag }}</span>
+                            <img
+                                :src="drink.image"
+                                :alt="drink.name"
+                                class="featured-photo"
+                            />
                         </div>
                     </article>
 
@@ -305,54 +328,79 @@ const featuredDrinks = [
 
 
         <!-- WHY DRINKY -->
-        <section class="section">
+        <section class="section why-section">
             <div class="container">
 
                 <div class="why-grid">
 
-                    <div>
-                        <p class="section-eyebrow">Why DRINKY?</p>
+                    <div class="why-content">
+                        <p class="section-eyebrow">Why DRINKY</p>
 
                         <h2 class="section-title">
                             Simple ingredients.
                             <br />
-                            Big flavour.
+                            <span class="why-title-accent">Big flavour.</span>
                         </h2>
 
                         <p class="why-text">
-                            We believe good drinks don't need complicated ingredients.
-                            Just fresh flavours, quality ingredients and a little love.
+                            We believe great drinks start with real ingredients.
+                            Just fresh fruits, natural flavours and lots of love.
                         </p>
 
-                        <Link href="/about" class="btn btn-dark why-button">
-                            Learn about DRINKY
+                        <Link href="/menu" class="btn btn-dark why-button">
+                            Explore Our Menu →
                         </Link>
+
+                        <p class="why-tagline">
+                            Good
+                            <br />
+                            Drinks
+                            <br />
+                            Brighter Days
+                        </p>
+                    </div>
+
+                    <div class="why-visual">
+                        <div class="why-visual-background"></div>
+                        <img
+                            src="/images/mango-blast.png"
+                            alt="Fresh mango smoothie"
+                            class="why-visual-photo"
+                        />
                     </div>
 
                     <div class="feature-grid">
 
                         <div class="feature-box feature-box-yellow">
-                            <div class="feature-icon">🍓</div>
-                            <h3 class="feature-name">Fresh ingredients</h3>
-                            <p class="feature-text">Quality ingredients in every drink.</p>
+                            <div class="feature-icon-wrap">
+                                <span class="feature-icon">🥭</span>
+                            </div>
+                            <h3 class="feature-name">Fresh Ingredients</h3>
+                            <p class="feature-text">Only the freshest fruits, always.</p>
                         </div>
 
                         <div class="feature-box feature-box-green feature-box-offset">
-                            <div class="feature-icon">⚡</div>
-                            <h3 class="feature-name">Made fresh</h3>
-                            <p class="feature-text">Prepared fresh when you order.</p>
+                            <div class="feature-icon-wrap">
+                                <span class="feature-icon">🍃</span>
+                            </div>
+                            <h3 class="feature-name">100% Natural</h3>
+                            <p class="feature-text">No artificial colours or flavours.</p>
                         </div>
 
                         <div class="feature-box feature-box-pink">
-                            <div class="feature-icon">❤️</div>
-                            <h3 class="feature-name">Made with love</h3>
-                            <p class="feature-text">Because boring drinks are sad.</p>
+                            <div class="feature-icon-wrap">
+                                <span class="feature-icon">❤️</span>
+                            </div>
+                            <h3 class="feature-name">Made with Love</h3>
+                            <p class="feature-text">Because great drinks bring happiness.</p>
                         </div>
 
-                        <div class="feature-box feature-box-grey feature-box-offset">
-                            <div class="feature-icon">🚴</div>
-                            <h3 class="feature-name">Easy ordering</h3>
-                            <p class="feature-text">Order online and enjoy.</p>
+                        <div class="feature-box feature-box-purple feature-box-offset">
+                            <div class="feature-icon-wrap">
+                                <span class="feature-icon">🫐</span>
+                            </div>
+                            <h3 class="feature-name">Always Refreshing</h3>
+                            <p class="feature-text">Cool, delicious, anytime.</p>
                         </div>
 
                     </div>
@@ -368,19 +416,54 @@ const featuredDrinks = [
             <div class="container">
 
                 <div class="cta">
-                    <p class="cta-eyebrow">Ready?</p>
 
-                    <h2 class="cta-title">
-                        Your next favourite drink is waiting.
-                    </h2>
+                    <img
+                        src="/images/cta-orange.png"
+                        alt=""
+                        class="cta-orange-decor"
+                        aria-hidden="true"
+                    />
 
-                    <p class="cta-text">
-                        Explore our menu and find something delicious.
+                    <div class="cta-content">
+                        <p class="cta-eyebrow">Ready?</p>
+
+                        <h2 class="cta-title">
+                            Your next favourite drink
+                            <br />
+                            <span class="cta-title-accent">is waiting.</span>
+                        </h2>
+
+                        <p class="cta-text">
+                            Explore our menu and find something delicious.
+                        </p>
+
+                        <Link href="/menu" class="cta-button">
+                            Order a Drink →
+                        </Link>
+
+                        <!--ul class="cta-features">
+                            <li><span class="cta-feature-icon">🍃</span> Fresh Ingredients</li>
+                            <li><span class="cta-feature-icon">❤️</span> Made with Love</li>
+                            <li><span class="cta-feature-icon">🛵</span> Quick &amp; Easy</li>
+                        </ul-->
+                    </div>
+
+                    <div class="cta-visual">
+                        <img
+                            src="/images/cta-smoothies.png"
+                            alt="Mango and strawberry smoothies"
+                            class="cta-visual-photo"
+                        />
+                    </div>
+
+                    <p class="cta-tagline">
+                        Good
+                        <br />
+                        Drinks
+                        <br />
+                        Brighter Days
                     </p>
 
-                    <Link href="/menu" class="cta-button">
-                        Order a Drink →
-                    </Link>
                 </div>
 
             </div>
@@ -506,7 +589,7 @@ img {
 
 .section-title {
     margin: 0;
-    font-size: clamp(28px, 6vw, 40px);
+    font-size: clamp(28px, 6vw, 50px);
     font-weight: 900;
     line-height: 1.1;
     letter-spacing: -0.02em;
@@ -958,6 +1041,8 @@ a:focus-visible {
 .categories-section {
     position: relative;
     overflow: hidden;
+    padding-top: 110px;
+    padding-bottom: 110px;
 }
 
 .categories-container {
@@ -1288,6 +1373,56 @@ a:focus-visible {
 /* =========================================
    FEATURED DRINKS
    ========================================= */
+.featured-section {
+    position: relative;
+    overflow: hidden;
+    background-color: #17251d;                 /* fallback while image loads */
+    background-image: url('/images/featured-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.featured-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(37, 23, 37, 0.063) 0%,
+        rgba(23, 37, 29, 0.445) 100%
+    );
+}
+
+.featured-section .container {
+    position: relative;
+    z-index: 1;
+}
+.featured-subtitle {
+    max-width: 420px;
+    margin: 14px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.featured-see-all {
+    flex: none;
+    padding: 12px 24px;
+    background-color: #fbef81;
+    color: #000000;
+    border: 1.5px solid #f4c95d00;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+.featured-see-all:hover {
+    background: #f4c95d;
+    color: #17251d;
+}
 
 .featured-grid {
     display: grid;
@@ -1296,9 +1431,14 @@ a:focus-visible {
 }
 
 .featured-card {
+    position: relative;
     overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    min-height: 260px;
+    padding: 28px 16px 0 24px;
     border-radius: 28px;
-    background: #ffffff;
     color: #17251d;
     transition:
         transform 0.3s ease,
@@ -1307,67 +1447,93 @@ a:focus-visible {
 
 .featured-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
 }
 
-.featured-image {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 200px;
-    background: #f8f7f2;
-    font-size: 90px;
-    transition: transform 0.5s ease;
+.featured-card--yellow {
+    background: linear-gradient(160deg, #fdf3e0 0%, #f9dfb0 100%);
 }
 
-.featured-card:hover .featured-image {
-    transform: scale(1.06);
+.featured-card--pink {
+    background: linear-gradient(160deg, #fce7e6 0%, #f8c9cd 100%);
+}
+
+.featured-card--brown {
+    background: linear-gradient(160deg, #f3ece2 0%, #e4d2bd 100%);
 }
 
 .featured-body {
-    padding: 24px;
+    position: relative;
+    z-index: 2;
+    flex: 1 1 55%;
+    min-width: 0;
+    padding-bottom: 28px;
 }
 
 .featured-category {
     margin: 0;
-    font-size: 12px;
-    font-weight: 700;
+    font-size: 11px;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #9ca3af;
+    letter-spacing: 0.1em;
 }
 
-.featured-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
+.featured-card--yellow .featured-category {
+    color: #d38a1f;
+}
+
+.featured-card--pink .featured-category {
+    color: #d94f4a;
+}
+
+.featured-card--brown .featured-category {
+    color: #8a5a2e;
 }
 
 .featured-name {
-    margin: 0;
+    margin: 10px 0 0;
     font-size: 22px;
     font-weight: 900;
+    line-height: 1.15;
+}
+
+.featured-description {
+    margin: 10px 0 0;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #5b5346;
+    max-width: 220px;
 }
 
 .featured-price {
+    margin: 16px 0 0;
+    font-size: 20px;
     font-weight: 900;
-    color: #e85d3f;
-    white-space: nowrap;
+}
+
+.featured-card--yellow .featured-price {
+    color: #d38a1f;
+}
+
+.featured-card--pink .featured-price {
+    color: #d94f4a;
+}
+
+.featured-card--brown .featured-price {
+    color: #8a5a2e;
 }
 
 .featured-button {
-    display: block;
-    margin-top: 22px;
-    padding: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding: 12px 20px;
     border-radius: 999px;
     background: #17251d;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    text-align: center;
     transition: background 0.25s ease;
 }
 
@@ -1375,17 +1541,80 @@ a:focus-visible {
     background: #e85d3f;
 }
 
+.featured-button-icon {
+    font-size: 14px;
+}
+
+.featured-visual {
+    position: relative;
+    flex: 1 1 45%;
+    align-self: flex-end;
+    min-width: 0;
+}
+
+.featured-photo {
+    position: relative;
+    z-index: 1;
+    width: 320px !important;
+    max-width: none !important;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    transform: scale(1.15);
+    filter: drop-shadow(0 20px 25px rgba(0, 0, 0, 0.2));
+    transition: transform 0.4s ease;
+}
+
+.featured-card:hover .featured-photo {
+    transform: scale(1.05);
+}
+
+.featured-tag {
+    position: absolute;
+    top: -20px;
+    right: 8px;
+    z-index: 2;
+    font-family: 'Segoe Script', 'Bradley Hand', cursive;
+    font-size: 12px;
+    font-style: italic;
+    color: #17251d;
+    opacity: 0.75;
+    transform: rotate(-4deg);
+    white-space: nowrap;
+}
+
 /* =========================================
    WHY DRINKY
    ========================================= */
 
+.why-section {
+    position: relative;
+    overflow: hidden;
+    padding-top: 110px;
+    padding-bottom: 110px;
+    background-color: #fdfbf5;
+    background-image: url('/images/why-drinky-bg.png');
+    background-size: 100% 100%;   /* was: 100% auto — now stretches it taller */
+    background-position: top center;
+    background-repeat: no-repeat;
+}
 .why-grid {
     display: grid;
-    gap: 48px;
+    gap: 40px;
+    align-items: center;
+}
+
+.why-content {
+    position: relative;
+    z-index: 2;
+}
+
+.why-title-accent {
+    color: #e85d3f;
 }
 
 .why-text {
-    max-width: 512px;
+    max-width: 440px;
     margin-top: 20px;
     font-size: 16px;
     line-height: 1.75;
@@ -1396,13 +1625,53 @@ a:focus-visible {
     margin-top: 28px;
 }
 
+.why-tagline {
+    margin: 32px 0 0;
+    font-family: 'Segoe Script', 'Bradley Hand', cursive;
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.25;
+    color: #7a9a68;
+}
+
+.why-visual {
+    position: relative;
+    width: 100%;
+    min-height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.why-visual-photo {
+    position: relative;
+    z-index: 2;
+    width: 500px;
+    max-width: none;
+    height: auto;
+    transform: scale(1.15);
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.15));
+}
+.why-visual-background {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #ffe9c2 0%, rgba(255, 233, 194, 0) 65%, #ffe9c2 100%);
+}
+
 .feature-grid {
+    position: relative;
+    z-index: 2;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
 }
 
 .feature-box {
+    position: relative;
+    overflow: hidden;
     padding: 22px;
     border-radius: 24px;
     transition:
@@ -1420,35 +1689,50 @@ a:focus-visible {
 }
 
 .feature-box-yellow {
-    background: #f4c95d;
+    background: #fdf1d9;
 }
 
 .feature-box-green {
-    background: #d9e8c8;
+    background: #e3f0da;
 }
 
 .feature-box-pink {
-    background: #f3ddd4;
+    background: #fce2e2;
 }
 
-.feature-box-grey {
-    background: #e8e4dc;
+.feature-box-purple {
+    background: #e7e3fb;
+}
+
+.feature-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 14px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
 }
 
 .feature-icon {
-    font-size: 30px;
+    font-size: 20px;
+    line-height: 1;
 }
 
 .feature-name {
-    margin: 24px 0 0;
-    font-size: 17px;
+    margin: 0;
+    font-size: 16px;
     font-weight: 900;
+    color: #17251d;
 }
 
 .feature-text {
-    margin: 8px 0 0;
+    margin: 6px 0 0;
     font-size: 13px;
-    color: #374151;
+    line-height: 1.5;
+    color: #6b7280;
 }
 
 /* =========================================
@@ -1462,38 +1746,40 @@ a:focus-visible {
 .cta {
     position: relative;
     overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: 28px;
     padding: 48px 24px;
     border-radius: 32px;
-    background: #e85d3f;
+    background-color: #e85d3f;
+    background-image: url('/images/cta-bg.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     color: #ffffff;
     text-align: center;
+    margin-top: 70px;
 }
 
-.cta::before {
-    content: "";
+.cta-orange-decor {
     position: absolute;
-    width: 320px;
-    height: 320px;
-    top: -170px;
-    right: -80px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.08);
-}
-
-.cta::after {
-    content: "";
-    position: absolute;
+    z-index: 1;
+    left: -60px;
+    bottom: 40px;
     width: 220px;
-    height: 220px;
-    bottom: -120px;
-    left: -70px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
+    height: auto;
+    opacity: 0.9;
+    pointer-events: none;
+}
+
+.cta-content {
+    position: relative;
+    z-index: 2;
+    margin-left: 150px;
 }
 
 .cta-eyebrow {
-    position: relative;
-    z-index: 1;
     margin: 0;
     font-size: 13px;
     font-weight: 700;
@@ -1503,29 +1789,27 @@ a:focus-visible {
 }
 
 .cta-title {
-    position: relative;
-    z-index: 1;
     margin: 16px 0 0;
-    font-size: clamp(28px, 6vw, 40px);
+    font-size: clamp(28px, 6vw, 48px);
     font-weight: 900;
     line-height: 1.1;
 }
 
+.cta-title-accent {
+    color: #f4c95d;
+}
+
 .cta-text {
-    position: relative;
-    z-index: 1;
-    max-width: 576px;
+    max-width: 400px;
     margin: 18px auto 0;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.8);
 }
 
 .cta-button {
-    position: relative;
-    z-index: 1;
     display: inline-block;
     margin-top: 28px;
-    padding: 14px 28px;
+    padding: 18px 38px;
     border-radius: 999px;
     background: #ffffff;
     color: #e85d3f;
@@ -1535,6 +1819,48 @@ a:focus-visible {
 
 .cta-button:hover {
     transform: translateY(-3px);
+}
+
+.cta-features {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 10px 20px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.cta-features li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cta-feature-icon {
+    font-size: 15px;
+}
+
+.cta-visual {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cta-visual-photo {
+    width: 100%;
+    max-width: 440px;
+    height: auto;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.25));
+}
+
+.cta-tagline {
+    display: none;
 }
 
 /* =========================================
@@ -1682,6 +2008,16 @@ a:focus-visible {
         padding-bottom: 72px;
     }
 
+    .categories-section {
+        padding-top: 140px;
+        padding-bottom: 140px;
+    }
+
+    .why-section {
+        padding-top: 150px;
+        padding-bottom: 150px;
+    }
+
     .cta {
         padding-left: 64px;
         padding-right: 64px;
@@ -1726,6 +2062,14 @@ a:focus-visible {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .why-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .why-visual {
+        grid-column: span 2;
+    }
+
     .hero-title {
         font-size: clamp(56px, 9vw, 84px);
     }
@@ -1733,6 +2077,42 @@ a:focus-visible {
     .hero-title-mark {
         width: 32px;
         height: 32px;
+    }
+
+    .cta {
+        grid-template-columns: 1.2fr 1fr;
+        padding: 56px 64px;
+        text-align: left;
+    }
+
+    .cta-orange-decor {
+        left: -60px;
+        bottom: -40px;
+        width: 360px;
+    }
+
+    .cta-text {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .cta-features {
+        justify-content: flex-start;
+    }
+
+    .cta-tagline {
+        display: block;
+        position: absolute;
+        z-index: 2;
+        top: 44px;
+        right: 48px;
+        font-family: 'Segoe Script', 'Bradley Hand', cursive;
+        font-size: 15px;
+        font-style: italic;
+        line-height: 1.3;
+        text-align: right;
+        color: rgba(255, 255, 255, 0.85);
+        transform: rotate(-3deg);
     }
 
     .drink-wrapper {
@@ -1769,17 +2149,31 @@ a:focus-visible {
         padding-bottom: 96px;
     }
 
+    .categories-section {
+        padding-top: 180px;
+        padding-bottom: 180px;
+    }
+
+    .why-section {
+        padding-top: 190px;
+        padding-bottom: 190px;
+    }
+
     .cta-wrapper {
         padding-bottom: 96px;
     }
 
-    .hero-grid,
-    .why-grid {
+    .hero-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .why-grid {
-        align-items: center;
+        grid-template-columns: 1fr 0.7fr 1.3fr;
+        gap: 32px;
+    }
+
+    .why-visual {
+        grid-column: auto;
     }
 
     .hero-grid {
@@ -1803,6 +2197,14 @@ a:focus-visible {
 
     .category-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .featured-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .featured-photo {
+        max-width: 200px;
     }
 
     .drink-wrapper {
