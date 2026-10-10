@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
+import FoldText from '@/Components/FoldText.vue'
 import { ref, computed } from 'vue'
 
 const selectedCategory = ref('All')
@@ -13,6 +14,26 @@ const categories = [
     'Tea',
     'Iced Drinks',
 ]
+
+// Icon shown inside each category card
+const categoryIcons = {
+    'Fresh Juices': '🍊',
+    'Smoothies': '🍓',
+    'Milkshakes': '🍫',
+    'Coffee': '☕',
+    'Tea': '🍵',
+    'Iced Drinks': '🍹',
+}
+
+// Categories that use a photo instead of an emoji
+const categoryImages = {
+    'Fresh Juices': '/images/fresh-juice-icon.png',
+    'Smoothies': '/images/smoothies-icon.png',
+    'Milkshakes': '/images/milkshakes-icon.png',
+    'Coffee': '/images/coffee-icon.png',
+    'Tea': '/images/tea-icon.png',
+    'Iced Drinks': '/images/iced-drinks-icon.png',
+}
 
 const drinks = [
     {
@@ -228,23 +249,45 @@ const addToCart = (drink) => {
             <div class="menu-hero-content">
 
                 <span class="menu-small-title">
-                    OUR MENU
+                    FRESH SIPS. HAPPIER DAYS.
                 </span>
 
-                <h1>
-                    Find your
-                    <span>perfect drink.</span>
-                </h1>
+                <FoldText
+                  text="Find Your"
+                  splitBy="char"
+                  hinge="top"
+                  trigger="scroll"
+                  :duration="0.65"
+                  :stagger="0.045"
+                  ease="power3.out"
+                  :perspective="700"
+                  :creaseShading="0.55"
+                  className="hero-fold-text hero-fold-text--find"
+                />
+                <br />
+                <FoldText
+                  text="Perfect Drink"
+                  splitBy="char"
+                  hinge="top"
+                  trigger="scroll"
+                  :duration="0.65"
+                  :stagger="0.045"
+                  ease="power3.out"
+                  :perspective="700"
+                  :creaseShading="0.55"
+                  className="hero-fold-text hero-fold-text--perfect"
+                />
 
                 <p>
                     Fresh juices, creamy smoothies, delicious shakes
                     and refreshing drinks made just for you.
                 </p>
 
-            </div>
+                <a href="#explore" class="hero-button">
+                    Explore Our Menu
+                    <span class="hero-button-arrow">→</span>
+                </a>
 
-            <div class="menu-hero-decoration">
-                🥤
             </div>
 
         </section>
@@ -254,7 +297,7 @@ const addToCart = (drink) => {
              CATEGORY FILTER + GRID
         ========================== -->
 
-        <section class="menu-section">
+        <section id="explore" class="menu-section">
 
             <div class="menu-container">
 
@@ -262,7 +305,7 @@ const addToCart = (drink) => {
 
                     <div>
                         <span class="section-label">
-                            — EXPLORE
+                            EXPLORE
                         </span>
 
                         <h2>
@@ -295,7 +338,43 @@ const addToCart = (drink) => {
                             }
                         ]"
                     >
-                        {{ category }}
+                        <span
+                            :class="[
+                                'category-icon',
+                                { 'category-icon-all': category === 'All' }
+                            ]"
+                        >
+                            <img
+                                v-if="categoryImages[category]"
+                                :src="categoryImages[category]"
+                                :alt="category"
+                                class="category-image"
+                            />
+
+                            <svg
+                                v-else-if="category === 'All'"
+                                class="category-all-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.2"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <rect x="3.5" y="3.5" width="7" height="7" rx="2.2" />
+                                <rect x="13.5" y="3.5" width="7" height="7" rx="2.2" />
+                                <rect x="3.5" y="13.5" width="7" height="7" rx="2.2" />
+                                <rect x="13.5" y="13.5" width="7" height="7" rx="2.2" />
+                            </svg>
+
+                            <template v-else>
+                                {{ categoryIcons[category] }}
+                            </template>
+                        </span>
+
+                        <span class="category-name">
+                            {{ category }}
+                        </span>
                     </button>
 
                 </div>
@@ -521,8 +600,21 @@ const addToCart = (drink) => {
 ========================================= */
 
 .menu-navbar {
-    background: #ffffff;
-    border-bottom: 1px solid rgba(23, 37, 29, 0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    width: 100%;
+
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px rgba(23, 37, 29, 0.08);
+
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .menu-nav-inner {
@@ -634,7 +726,8 @@ const addToCart = (drink) => {
 .menu-hero {
     position: relative;
 
-    min-height: 390px;
+    min-height: 0;
+    height: clamp(740px, 50vw, 1000px);
 
     display: flex;
     align-items: center;
@@ -643,8 +736,13 @@ const addToCart = (drink) => {
 
     overflow: hidden;
 
-    background: #17251d;
-    color: white;
+    background-color: #ece8df;
+    background-image: url('/images/menu-hero-bg.png');
+    background-size: cover;
+    background-position: right center;
+    background-repeat: no-repeat;
+
+    color: #12301f;
 }
 
 .menu-hero-content {
@@ -659,7 +757,7 @@ const addToCart = (drink) => {
 
     margin-bottom: 18px;
 
-    color: #f48d5d;
+    color: #5f9160;
 
     font-size: 13px;
     font-weight: 800;
@@ -670,53 +768,76 @@ const addToCart = (drink) => {
 .menu-hero h1 {
     margin: 0;
 
+    color: #12301f;
+
     font-size: clamp(50px, 7vw, 88px);
 
     line-height: 0.95;
 
     font-weight: 900;
 
-    letter-spacing: -4px;
+    letter-spacing: -3px;
 }
 
 .menu-hero h1 span {
-    display: block;
     color: #e85d27;
 }
 
+/* FoldText instances in the hero: className lands on FoldText's own root
+   element (a child component), so :deep() is required for these scoped
+   selectors to reach it. */
+.menu-hero-content :deep(.hero-fold-text) {
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 800;
+}
+
+.menu-hero-content :deep(.hero-fold-text--find) {
+    color: #e162a2;
+}
+
+.menu-hero-content :deep(.hero-fold-text--perfect) {
+    color: #f77810;
+}
+
 .menu-hero p {
-    max-width: 600px;
-
+    max-width: 480px;
     margin-top: 25px;
-
-    color: rgba(255, 255, 255, 0.7);
-
+    color: #5c655e;
     font-size: 18px;
     line-height: 1.7;
 }
 
-.menu-hero-decoration {
-    position: absolute;
-
-    right: 8%;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    width: 250px;
-    height: 250px;
-
-    display: flex;
+.hero-button {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
 
-    border-radius: 50%;
+    margin-top: 30px;
 
-    background: #f4c95d;
+    padding: 18px 36px;
 
-    font-size: 130px;
+    border-radius: 999px;
 
-    animation: floatDrink 4s ease-in-out infinite;
+    background: #12301f;
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    box-shadow: 0 10px 25px rgba(18, 48, 31, 0.25);
+
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.hero-button:hover {
+    transform: translateY(-3px);
+    background: #0f2a1c;
+}
+
+.hero-button-arrow {
+    font-size: 18px;
 }
 
 
@@ -726,6 +847,8 @@ const addToCart = (drink) => {
 
 .menu-section {
     padding: 90px 24px;
+
+    scroll-margin-top: 20px;
 }
 
 .menu-container {
@@ -735,10 +858,12 @@ const addToCart = (drink) => {
 
 .category-header {
     display: flex;
-    align-items: end;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
 
     margin-bottom: 35px;
+
+    text-align: center;
 }
 
 .section-label {
@@ -746,12 +871,12 @@ const addToCart = (drink) => {
 
     margin-bottom: 10px;
 
-    color: #6f7a70;
+    color: #5f9160;
 
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
 
-    letter-spacing: 0.04em;
+    letter-spacing: 0.2em;
 }
 
 .category-header h2 {
@@ -772,7 +897,7 @@ const addToCart = (drink) => {
 }
 
 .drink-count {
-    margin: 0;
+    margin: 14px 0 0;
 
     color: #8a9089;
     font-size: 14px;
@@ -786,24 +911,32 @@ const addToCart = (drink) => {
 .category-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    justify-content: center;
+    gap: 14px;
 
     margin-bottom: 45px;
 }
 
 .category-button {
-    padding: 12px 22px;
+    width: 168px;
 
-    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
 
-    border-radius: 999px;
+    padding: 18px 12px;
 
-    background: #e5ebe2;
-    color: #33422f;
+    border: 2px solid #ece9e0;
+
+    border-radius: 22px;
+
+    background: white;
+    color: #12301f;
 
     font-family: inherit;
 
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
 
     cursor: pointer;
@@ -812,12 +945,55 @@ const addToCart = (drink) => {
 }
 
 .category-button:hover {
-    background: #d9e1d6;
+    transform: translateY(-4px);
+
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
 }
 
 .category-button.active {
-    background: #12301f;
-    color: white;
+    border-color: #f0dbcc;
+}
+
+.category-icon {
+    width: 84px;
+    height: 84px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f6ece4;
+
+    font-size: 40px;
+    line-height: 1;
+}
+
+.category-button.active .category-icon {
+    background: #f5eadd78;
+    color: #12301f;
+}
+
+.category-image {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+
+    object-fit: contain;
+    display: block;
+}
+
+.category-icon-all {
+    background: #dcebd9;
+    color: #000000;
+}
+
+.category-all-icon {
+    width: 38px;
+    height: 38px;
+
+    display: block;
 }
 
 
@@ -1224,11 +1400,6 @@ const addToCart = (drink) => {
     .drink-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    .menu-hero-decoration {
-        right: 3%;
-        transform: translateY(-50%) scale(0.75);
-    }
 }
 
 
@@ -1251,8 +1422,25 @@ const addToCart = (drink) => {
     }
 
     .menu-hero {
-        min-height: 500px;
+        min-height: 0;
+        height: 800px;
         padding: 70px 25px;
+
+        background-position: 72% center;
+        background-size: cover;
+    }
+
+    .menu-hero::before {
+        content: "";
+
+        position: absolute;
+        inset: 0;
+
+        background: linear-gradient(
+            90deg,
+            rgba(248, 247, 242, 0.85) 0%,
+            rgba(248, 247, 242, 0.35) 100%
+        );
     }
 
     .menu-hero h1 {
@@ -1264,22 +1452,8 @@ const addToCart = (drink) => {
         font-size: 16px;
     }
 
-    .menu-hero-decoration {
-        opacity: 0.25;
-
-        right: -60px;
-
-        transform: translateY(-50%) scale(0.8);
-    }
-
     .menu-section {
         padding: 60px 18px;
-    }
-
-    .category-header {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 10px;
     }
 
     .category-header h2 {
@@ -1289,12 +1463,14 @@ const addToCart = (drink) => {
     .category-buttons {
         overflow-x: auto;
         flex-wrap: nowrap;
+        justify-content: flex-start;
 
-        padding-bottom: 5px;
+        padding-bottom: 8px;
     }
 
     .category-button {
         flex-shrink: 0;
+        width: 140px;
     }
 
     .drink-grid {

@@ -73,7 +73,7 @@ const isSingle = computed(() => props.videos.length <= 1)
 </script>
 
 <template>
-    <section class="mt-16 bg-white pb-16 sm:mt-24 sm:pb-24">
+    <section class="mt-16 bg-white sm:mt-24">
 
         <div class="video-banner relative left-1/2 right-1/2 -mx-[50vw] w-screen overflow-hidden bg-[#17251d]">
 
