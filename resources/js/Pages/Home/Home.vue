@@ -59,6 +59,15 @@ const featuredDrinks = [
         theme: 'brown',
     },
 ]
+
+const carouselDrinks = [
+    { name: 'Orange Juice', image: '/images/Orng.png', hoverImage: '/images/Orange.png' },
+    { name: 'Blueberry Juice', image: '/images/Bb.png', hoverImage: '/images/Blue Berry.png' },
+    { name: 'Lemon Juice', image: '/images/Lime.png', hoverImage: '/images/Lemon.png' },
+    { name: 'Strawberry Juice', image: '/images/Strwbry.png', hoverImage: '/images/Strawberry.png' },
+    { name: 'Mango Juice', image: '/images/Mang.png', hoverImage: '/images/Mango.png' },
+    { name: 'Berry Juice', image: '/images/Mb.png', hoverImage: '/images/Mix Berry.png' },
+]
 </script>
 
 <template>
@@ -323,6 +332,37 @@ const featuredDrinks = [
 
                 </div>
 
+            </div>
+        </section>
+
+
+        <!-- EXPLORE FLAVORS -->
+        <section class="flavor-section" aria-labelledby="flavor-title">
+            <div class="container flavor-container">
+                <div class="flavor-heading">
+                    <p class="section-eyebrow">A little color in every sip</p>
+                    <h2 id="flavor-title" class="section-title">EXPLORE OUR FLAVORS</h2>
+                    <p class="flavor-subtitle">Fresh flavors, colorful moments. Find your perfect sip.</p>
+                </div>
+
+                <div class="flavor-accordion" aria-label="Explore Drinky flavors">
+                    <a
+                        v-for="(drink, index) in carouselDrinks"
+                        :key="drink.name"
+                        class="flavor-panel"
+                        :href="`/menu/${encodeURIComponent(drink.name.toLowerCase().replaceAll(' ', '-'))}`"
+                        :aria-label="`Explore ${drink.name}`"
+                        :style="{ '--panel-index': index }"
+                    >
+                        <span class="flavor-image-stack" aria-hidden="true">
+                            <img :src="drink.image" alt="" class="flavor-image flavor-image-primary" draggable="false" />
+                            <img :src="drink.hoverImage" alt="" class="flavor-image flavor-image-hover" draggable="false" />
+                        </span>
+                        <span class="sr-only">{{ drink.name }}</span>
+                        <span class="flavor-name">{{ drink.name }}</span>
+                    </a>
+                </div>
+                <p class="flavor-swipe-hint" aria-hidden="true">Swipe to explore <span>→</span></p>
             </div>
         </section>
 
@@ -929,6 +969,220 @@ a:focus-visible {
     transform: rotate(-3deg);
     width: 100%;
     max-width: 320px;
+}
+
+/* =========================================
+   EXPLORE FLAVORS ACCORDION
+   ========================================= */
+
+.flavor-section {
+    padding: 64px 0 76px;
+    background: #fffaf2;
+}
+
+.flavor-heading {
+    margin-bottom: 26px;
+    text-align: center;
+}
+
+.flavor-heading .section-eyebrow {
+    margin-bottom: 10px;
+}
+
+.flavor-heading .section-title {
+    margin: 0;
+    color: #17251d;
+    font-size: clamp(27px, 3.3vw, 40px);
+    font-weight: 900;
+    letter-spacing: 0.035em;
+    line-height: 1.12;
+}
+
+.flavor-subtitle {
+    margin: 12px 0 0;
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.flavor-accordion {
+    display: flex;
+    width: 100%;
+    height: clamp(420px, 38vw, 520px);
+    overflow: hidden;
+    border-radius: 22px;
+    background: #f4f1ec;
+}
+
+.flavor-panel {
+    position: relative;
+    display: block;
+    flex: 1 1 0px;
+    min-width: 0;
+    flex-basis: 0;
+    height: 100%;
+    overflow: hidden;
+    transition: flex-grow 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flavor-panel:hover,
+.flavor-panel:focus-visible {
+    flex-grow: 3;
+    flex-basis: 0;
+    z-index: 1;
+    outline: none;
+}
+
+.flavor-image-stack {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.flavor-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: opacity 350ms ease;
+}
+
+.flavor-image-primary {
+    opacity: 1;
+    z-index: 1;
+}
+
+.flavor-image-hover {
+    opacity: 0;
+    z-index: 2;
+}
+
+.flavor-panel:hover .flavor-image-hover,
+.flavor-panel:focus-visible .flavor-image-hover {
+    opacity: 1;
+}
+
+.flavor-panel:hover .flavor-image-primary,
+.flavor-panel:focus-visible .flavor-image-primary {
+    opacity: 0;
+}
+
+.flavor-name {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    overflow: hidden;
+    color: white;
+    font-size: 17px;
+    font-weight: 800;
+    text-align: center;
+    text-overflow: ellipsis;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 220ms ease;
+}
+
+.flavor-panel:hover .flavor-name,
+.flavor-panel:focus-visible .flavor-name {
+    opacity: 1;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.flavor-swipe-hint {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .flavor-section {
+        padding: 64px 0;
+    }
+
+    .flavor-heading {
+        margin-bottom: 22px;
+    }
+
+    .flavor-subtitle {
+        font-size: 14px;
+    }
+
+    .flavor-accordion {
+        height: min(125vw, 500px);
+        gap: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-radius: 18px;
+        scroll-snap-type: x mandatory;
+        overscroll-behavior-x: contain;
+        scrollbar-width: none;
+    }
+
+    .flavor-accordion::-webkit-scrollbar {
+        display: none;
+    }
+
+    .flavor-panel,
+    .flavor-panel:hover,
+    .flavor-panel:focus-visible {
+        flex: 0 0 100%;
+        min-width: 0;
+        scroll-snap-align: start;
+    }
+
+    .flavor-image-primary {
+        object-fit: contain;
+    }
+
+    .flavor-image-hover {
+        object-fit: contain;
+    }
+
+    .flavor-name {
+        opacity: 1;
+    }
+
+    .flavor-panel:active .flavor-image-hover,
+    .flavor-panel:focus .flavor-image-hover {
+        opacity: 1;
+    }
+
+    .flavor-panel:active .flavor-image-primary,
+    .flavor-panel:focus .flavor-image-primary {
+        opacity: 0;
+    }
+
+    .flavor-swipe-hint {
+        display: block;
+        margin: 12px 0 0;
+        color: #6b7280;
+        font-size: 12px;
+        text-align: center;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flavor-panel,
+    .flavor-image,
+    .flavor-name {
+        transition: none;
+    }
 }
 
 .hero-tag-arrow {
