@@ -1,3 +1,4 @@
+/drinky/
 *.log
 .DS_Store
 .env
