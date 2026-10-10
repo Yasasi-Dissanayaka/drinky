@@ -3,24 +3,53 @@ import { Head, Link } from '@inertiajs/vue3'
 
 const values = [
     {
-        icon: '🥭',
+        image: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80',
+        icon: '🌿',
+        accent: '#5fae72',
         title: 'Fresh Ingredients',
-        text: 'We use fresh ingredients to make every drink taste better.'
+        text: 'We use fresh, high-quality ingredients to make every drink taste better.'
     },
     {
-        icon: '💚',
+        image: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=600&q=80',
+        icon: '❤️',
+        accent: '#e8748c',
         title: 'Made With Care',
         text: 'Every drink is prepared with care, quality and attention.'
     },
     {
+        image: 'https://images.unsplash.com/photo-1526367790999-0150786686a2?auto=format&fit=crop&w=600&q=80',
         icon: '🚚',
+        accent: '#e8b23d',
         title: 'Fast Delivery',
         text: 'We bring your favourite drinks straight to your door.'
     },
     {
+        image: 'https://images.unsplash.com/photo-1497534446932-c925b458314e?auto=format&fit=crop&w=600&q=80',
         icon: '😊',
+        accent: '#5aa7d6',
         title: 'Happy Customers',
         text: 'Our goal is simple: great drinks and happy customers.'
+    }
+]
+
+const heroFeatures = [
+    {
+        icon: '🌿',
+        accent: '#5fae72',
+        title: '100% Fresh',
+        text: 'Real Ingredients'
+    },
+    {
+        icon: '❤️',
+        accent: '#e8748c',
+        title: 'Loved by Many',
+        text: 'Happy Customers'
+    },
+    {
+        icon: '🥤',
+        accent: '#e8b23d',
+        title: 'Made with Care',
+        text: 'Quality in Every Cup'
     }
 ]
 
@@ -96,23 +125,44 @@ const stats = [
                     people's everyday moments a little better.
                 </p>
 
+                <div class="hero-actions">
+
+                    <Link href="/menu" class="primary-button">
+                        Explore Our Menu
+                        <span>→</span>
+                    </Link>
+
+                    <button type="button" class="watch-story">
+                        <span class="play-icon">▶</span>
+                        Watch Our Story
+                    </button>
+
+                </div>
+
+                
+
             </div>
 
             <div class="hero-decoration">
-                <div class="fruit fruit-one">🍓</div>
-                <div class="fruit fruit-two">🥭</div>
-                <div class="fruit fruit-three">🍋</div>
-                <div class="fruit fruit-four">🫐</div>
 
-                <div class="drink-circle">
-                    <div class="drink-cup">
-                        <div class="drink-liquid"></div>
-                        <div class="straw"></div>
-                        <div class="cup-label">
-                            DRINKY
-                        </div>
-                    </div>
+                <div class="hero-blob"></div>
+
+                <img class="hero-image" src="/images/drinky-hero.png" alt="Drinky" />
+
+                <div class="hero-doodle">
+                    Good Drinks
+                    <br>
+                    Brighter Days
                 </div>
+
+                <div class="hero-badge">
+                    SIP
+                    <br>
+                    GOOD
+                    <br>
+                    VIBES
+                </div>
+
             </div>
 
         </section>
@@ -212,6 +262,12 @@ const stats = [
 
             </div>
 
+            <div class="section-doodle">
+                Good Drinks
+                <br>
+                Brighter Days
+            </div>
+
 
             <div class="values-grid">
 
@@ -221,8 +277,15 @@ const stats = [
                     class="value-card"
                 >
 
-                    <div class="value-icon">
-                        {{ value.icon }}
+                    <div class="value-image">
+                        <img :src="value.image" :alt="value.title">
+
+                        <div
+                            class="value-icon"
+                            :style="{ background: value.accent + '22', color: value.accent }"
+                        >
+                            {{ value.icon }}
+                        </div>
                     </div>
 
                     <h3>
@@ -232,6 +295,11 @@ const stats = [
                     <p>
                         {{ value.text }}
                     </p>
+
+                    <span
+                        class="value-underline"
+                        :style="{ background: value.accent }"
+                    ></span>
 
                 </div>
 
@@ -376,6 +444,11 @@ const stats = [
     font-family: Arial, Helvetica, sans-serif;
 }
 
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
 
 /* =========================
    NAVBAR
@@ -393,7 +466,7 @@ const stats = [
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1800px;
     margin: auto;
     padding: 18px 25px;
 
@@ -478,7 +551,7 @@ const stats = [
     position: relative;
     z-index: 2;
 
-    max-width: 1200px;
+    max-width: 1600px;
     width: 100%;
     margin: auto;
 
@@ -504,7 +577,24 @@ const stats = [
 }
 
 .hero-content h1 span {
+    position: relative;
+    display: inline-block;
+
     color: #70ae80;
+}
+
+.hero-content h1 span::after {
+    content: '';
+
+    position: absolute;
+
+    left: 2px;
+    right: 8px;
+    bottom: -12px;
+
+    height: 14px;
+
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20'><path d='M2 10 Q 30 2, 60 10 T 120 10 T 180 10' fill='none' stroke='%2370ae80' stroke-width='4' stroke-linecap='round'/></svg>") no-repeat center / 100% 100%;
 }
 
 .hero-content p {
@@ -518,6 +608,93 @@ const stats = [
     line-height: 1.8;
 }
 
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+
+    margin-top: 32px;
+}
+
+.watch-story {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    background: none;
+    border: none;
+
+    color: #17231d;
+
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+
+    cursor: pointer;
+}
+
+.play-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    background: white;
+    color: #70ae80;
+
+    border-radius: 50%;
+
+    box-shadow: 0 10px 22px rgba(40, 60, 45, 0.14);
+
+    font-size: 12px;
+}
+
+/*.hero-features {
+    display: flex;
+    gap: 28px;
+
+    margin-top: 46px;
+}*/
+
+.hero-feature {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.hero-feature-icon {
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 46px;
+    height: 46px;
+
+    border-radius: 50%;
+
+    font-size: 17px;
+}
+
+.hero-feature strong {
+    display: block;
+
+    font-size: 13px;
+}
+
+.hero-feature span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #8b968f;
+
+    font-size: 12px;
+}
+
 
 /* =========================
    HERO DRINK
@@ -526,97 +703,86 @@ const stats = [
 .hero-decoration {
     position: absolute;
 
-    right: 5%;
+    right: 3%;
     top: 50%;
 
-    width: 450px;
-    height: 450px;
+    width: 560px;
+    height: 500px;
 
     transform: translateY(-50%);
 }
 
-.drink-circle {
+.hero-blob {
+    position: absolute;
+    inset: 40px 60px;
+
+    background: radial-gradient(
+        circle at 42% 40%,
+        #e2f1e5,
+        #eef7f0 70%
+    );
+
+    border-radius: 48% 52% 45% 55% / 55% 45% 58% 42%;
+}
+
+.hero-image {
     position: absolute;
 
-    width: 330px;
-    height: 330px;
-
+    left: 30%;
     top: 50%;
-    left: 50%;
+
+    width: 620px;
 
     transform: translate(-50%, -50%);
+
+    filter: drop-shadow(0 25px 30px rgba(40, 60, 45, 0.22));
+
+    z-index: 2;
+}
+
+.hero-doodle {
+    position: absolute;
+
+    right: -15px;
+    top: 15px;
+
+    color: #6ea27c;
+
+    font-family: 'Brush Script MT', cursive;
+    font-size: 21px;
+    font-style: italic;
+    line-height: 1.3;
+    text-align: right;
+
+    transform: rotate(-4deg);
+}
+
+.hero-badge {
+    position: absolute;
+
+    right: -15px;
+    bottom: 15px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
+    width: 92px;
+    height: 92px;
 
-    background: #e2f1e5;
-}
-
-.drink-cup {
-    position: relative;
-
-    width: 150px;
-    height: 210px;
-
-    background: linear-gradient(
-        180deg,
-        #f6b56e,
-        #e8924d
-    );
-
-    border-radius: 18px 18px 40px 40px;
-
-    box-shadow:
-        0 25px 35px rgba(80, 100, 85, 0.18);
-}
-
-.drink-liquid {
-    position: absolute;
-
-    top: 0;
-    left: -4px;
-
-    width: calc(100% + 8px);
-    height: 35px;
-
-    background: #f7c57e;
+    background: #eaf5ec;
+    color: #5c8a68;
 
     border-radius: 50%;
-}
 
-.straw {
-    position: absolute;
+    text-align: center;
 
-    width: 12px;
-    height: 100px;
-
-    top: -80px;
-    right: 25px;
-
-    background: #79b88a;
-
-    transform: rotate(8deg);
-
-    border-radius: 8px;
-}
-
-.cup-label {
-    position: absolute;
-
-    left: 50%;
-    top: 50%;
-
-    transform: translate(-50%, -50%) rotate(-8deg);
-
-    color: white;
-
-    font-size: 19px;
-    font-weight: 900;
-
+    font-size: 11px;
+    font-weight: 800;
     letter-spacing: 1px;
+    line-height: 1.6;
+
+    transform: rotate(-8deg);
 }
 
 .fruit {
@@ -681,7 +847,7 @@ const stats = [
 ========================= */
 
 .story-section {
-    max-width: 1200px;
+    max-width: 1800px;
 
     margin: auto;
     padding: 100px 25px;
@@ -823,7 +989,7 @@ const stats = [
 }
 
 .stats-container {
-    max-width: 1200px;
+    max-width: 1400px;
 
     margin: auto;
     padding: 55px 25px;
@@ -862,7 +1028,9 @@ const stats = [
 ========================= */
 
 .values-section {
-    max-width: 1200px;
+    position: relative;
+
+    max-width: 1800px;
 
     margin: auto;
     padding: 100px 25px;
@@ -886,6 +1054,10 @@ const stats = [
 
 .section-heading h2 span {
     color: #70ae80;
+
+    text-decoration: underline;
+    text-decoration-color: #70ae80;
+    text-underline-offset: 6px;
 }
 
 .section-heading p {
@@ -893,25 +1065,46 @@ const stats = [
     font-size: 15px;
 }
 
+.section-doodle {
+    position: absolute;
+
+    right: 30px;
+    top: 60px;
+
+    color: #cddad1;
+
+    font-family: 'Brush Script MT', cursive;
+    font-size: 22px;
+    font-style: italic;
+    line-height: 1.3;
+    text-align: right;
+
+    transform: rotate(-3deg);
+
+    pointer-events: none;
+}
+
 .values-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
 
-    gap: 20px;
+    gap: 26px;
 
     margin-top: 50px;
 }
 
 .value-card {
-    padding: 30px 24px;
+    padding-bottom: 26px;
 
     background: white;
 
     border: 1px solid #e3ebe5;
 
-    border-radius: 20px;
+    border-radius: 22px;
 
     text-align: center;
+
+    overflow: hidden;
 
     transition: 0.25s;
 }
@@ -922,36 +1115,75 @@ const stats = [
     box-shadow: 0 18px 35px rgba(35, 55, 42, 0.08);
 }
 
-.value-icon {
-    width: 60px;
-    height: 60px;
+.value-image {
+    position: relative;
 
-    margin: auto;
+    width: 100%;
+    height: 190px;
+
+    margin-bottom: 45px;
+}
+
+.value-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.value-icon {
+    position: absolute;
+
+    left: 50%;
+    bottom: -28px;
+
+    transform: translateX(-50%);
+
+    width: 56px;
+    height: 56px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #edf6ef;
+    background: white;
+    border-radius: 50%;
 
-    border-radius: 17px;
+    box-shadow: 0 10px 22px rgba(35, 55, 42, 0.14);
 
-    font-size: 27px;
+    font-size: 24px;
 }
 
 .value-card h3 {
-    margin: 20px 0 10px;
+    margin: 0 0 10px;
+
+    padding: 0 20px;
 
     font-size: 17px;
 }
 
 .value-card p {
-    margin: 0;
+    margin: 0 0 18px;
+
+    padding: 0 24px;
 
     color: #7d8882;
 
     font-size: 13px;
     line-height: 1.7;
+}
+
+.value-underline {
+    display: block;
+
+    width: 36px;
+    height: 3px;
+
+    margin: 0 auto;
+
+    border-radius: 3px;
 }
 
 
@@ -964,7 +1196,7 @@ const stats = [
 }
 
 .mission-card {
-    max-width: 1150px;
+    max-width: 1340px;
 
     margin: auto;
     padding: 65px;
@@ -1099,7 +1331,7 @@ const stats = [
 }
 
 .footer-container {
-    max-width: 1200px;
+    max-width: 1800px;
 
     margin: auto;
     padding: 45px 25px;
@@ -1172,6 +1404,10 @@ const stats = [
 
     .values-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-doodle {
+        display: none;
     }
 
 }

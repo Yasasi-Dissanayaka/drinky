@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
+import FoldText from '@/Components/FoldText.vue'
 import { ref, computed } from 'vue'
 
 const selectedCategory = ref('All')
@@ -14,6 +15,26 @@ const categories = [
     'Iced Drinks',
 ]
 
+// Icon shown inside each category card
+const categoryIcons = {
+    'Fresh Juices': '🍊',
+    'Smoothies': '🍓',
+    'Milkshakes': '🍫',
+    'Coffee': '☕',
+    'Tea': '🍵',
+    'Iced Drinks': '🍹',
+}
+
+// Categories that use a photo instead of an emoji
+const categoryImages = {
+    'Fresh Juices': '/images/fresh-juice-icon.png',
+    'Smoothies': '/images/smoothies-icon.png',
+    'Milkshakes': '/images/milkshakes-icon.png',
+    'Coffee': '/images/coffee-icon.png',
+    'Tea': '/images/tea-icon.png',
+    'Iced Drinks': '/images/iced-drinks-icon.png',
+}
+
 const drinks = [
     {
         id: 1,
@@ -22,7 +43,7 @@ const drinks = [
         description: 'Creamy mango smoothie with a fresh tropical taste.',
         price: 650,
         icon: '🥭',
-        image:'/images/mango blast.png',
+        image: '/images/mango blast.png',
         popular: true,
     },
     {
@@ -32,9 +53,8 @@ const drinks = [
         description: 'A refreshing mix of fresh berries and fruit.',
         price: 700,
         icon: '🍓',
-        image:'/images/berry fresh.png',
-        popular: true,
-        
+        image: '/images/berry fresh.png',
+        popular: false,
     },
     {
         id: 3,
@@ -43,9 +63,8 @@ const drinks = [
         description: 'Rich chocolate milkshake topped with creamy goodness.',
         price: 750,
         icon: '🍫',
-        image:'/images/choco blast.png',
+        image: '/images/choco blast.png',
         popular: false,
-        
     },
     {
         id: 4,
@@ -54,9 +73,8 @@ const drinks = [
         description: 'Fresh pineapple juice with a bright tropical flavour.',
         price: 600,
         icon: '🍍',
-        image:'/images/pinapple splash.png',
+        image: '/images/pinapple splash.png',
         popular: false,
-        
     },
     {
         id: 5,
@@ -65,7 +83,7 @@ const drinks = [
         description: 'Sweet strawberries blended with smooth creamy milk.',
         price: 700,
         icon: '🍓',
-        image:'/images/Strawberry Cream.png',
+        image: '/images/Strawberry Cream.png',
         popular: true,
     },
     {
@@ -75,7 +93,7 @@ const drinks = [
         description: 'Smooth and rich coffee made for your everyday moment.',
         price: 450,
         icon: '☕',
-        image:'/images/Classic Coffee.png',
+        image: '/images/Classic Coffee.png',
         popular: false,
     },
     {
@@ -85,7 +103,7 @@ const drinks = [
         description: 'Refreshing iced tea with a sweet peach flavour.',
         price: 500,
         icon: '🍑',
-        image:'/images/Peach Iced Tea.png',
+        image: '/images/Peach Iced Tea.png',
         popular: false,
     },
     {
@@ -95,20 +113,39 @@ const drinks = [
         description: 'A cool and refreshing lime drink with a citrus kick.',
         price: 450,
         icon: '🍋',
-        image:'/images/Lime Cooler.png',
+        image: '/images/Lime Cooler.png',
         popular: true,
     },
     {
         id: 9,
         name: 'Mix Fruit',
         category: 'Fresh Juices',
-        description: 'Creamy mango smoothie with a fresh tropical taste.',
+        description: 'A creamy blend of seasonal fruit, fresh and cold.',
         price: 650,
         icon: '🥭',
-        image:'/images/fresh juice.png',
-        popular: true,
+        image: '/images/fresh juice.png',
+        popular: false,
     },
 ]
+
+// Badge colour per category — used when a drink isn't flagged "popular"
+const categoryBadgeStyles = {
+    'Fresh Juices': { bg: '#fbdce9', text: '#a13f66' },
+    'Smoothies':    { bg: '#fdeccb', text: '#8a5a13' },
+    'Milkshakes':   { bg: '#b08968', text: '#ffffff' },
+    'Coffee':       { bg: '#d8c3ad', text: '#5b3a1e' },
+    'Tea':          { bg: '#dceedd', text: '#2f6b3d' },
+    'Iced Drinks':  { bg: '#cfeaf0', text: '#0f6478' },
+}
+
+const popularBadgeStyle = { bg: '#f4c95d', text: '#5b4416' }
+
+function getBadge(drink) {
+    if (drink.popular) {
+        return { label: 'Popular', ...popularBadgeStyle }
+    }
+    return { label: drink.category, ...(categoryBadgeStyles[drink.category] || popularBadgeStyle) }
+}
 
 const filteredDrinks = computed(() => {
     if (selectedCategory.value === 'All') {
@@ -119,6 +156,7 @@ const filteredDrinks = computed(() => {
         drink => drink.category === selectedCategory.value
     )
 })
+
 const addToCart = (drink) => {
     const cart = JSON.parse(
         localStorage.getItem('drinky_cart') || '[]'
@@ -211,33 +249,55 @@ const addToCart = (drink) => {
             <div class="menu-hero-content">
 
                 <span class="menu-small-title">
-                    OUR MENU
+                    FRESH SIPS. HAPPIER DAYS.
                 </span>
 
-                <h1>
-                    Find your
-                    <span>perfect drink.</span>
-                </h1>
+                <FoldText
+                  text="Find Your"
+                  splitBy="char"
+                  hinge="top"
+                  trigger="scroll"
+                  :duration="0.65"
+                  :stagger="0.045"
+                  ease="power3.out"
+                  :perspective="700"
+                  :creaseShading="0.55"
+                  className="hero-fold-text hero-fold-text--find"
+                />
+                <br />
+                <FoldText
+                  text="Perfect Drink"
+                  splitBy="char"
+                  hinge="top"
+                  trigger="scroll"
+                  :duration="0.65"
+                  :stagger="0.045"
+                  ease="power3.out"
+                  :perspective="700"
+                  :creaseShading="0.55"
+                  className="hero-fold-text hero-fold-text--perfect"
+                />
 
                 <p>
                     Fresh juices, creamy smoothies, delicious shakes
                     and refreshing drinks made just for you.
                 </p>
 
-            </div>
+                <a href="#explore" class="hero-button">
+                    Explore Our Menu
+                    <span class="hero-button-arrow">→</span>
+                </a>
 
-            <div class="menu-hero-decoration">
-                🥤
             </div>
 
         </section>
 
 
         <!-- =========================
-             CATEGORY FILTER
+             CATEGORY FILTER + GRID
         ========================== -->
 
-        <section class="menu-section">
+        <section id="explore" class="menu-section">
 
             <div class="menu-container">
 
@@ -251,6 +311,10 @@ const addToCart = (drink) => {
                         <h2>
                             What are you craving?
                         </h2>
+
+                        <p class="section-subtitle">
+                            Fresh ingredients. Real flavour. Made for your mood.
+                        </p>
                     </div>
 
                     <p class="drink-count">
@@ -274,15 +338,47 @@ const addToCart = (drink) => {
                             }
                         ]"
                     >
-                        {{ category }}
+                        <span
+                            :class="[
+                                'category-icon',
+                                { 'category-icon-all': category === 'All' }
+                            ]"
+                        >
+                            <img
+                                v-if="categoryImages[category]"
+                                :src="categoryImages[category]"
+                                :alt="category"
+                                class="category-image"
+                            />
+
+                            <svg
+                                v-else-if="category === 'All'"
+                                class="category-all-icon"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.2"
+                                stroke-linejoin="round"
+                                aria-hidden="true"
+                            >
+                                <rect x="3.5" y="3.5" width="7" height="7" rx="2.2" />
+                                <rect x="13.5" y="3.5" width="7" height="7" rx="2.2" />
+                                <rect x="3.5" y="13.5" width="7" height="7" rx="2.2" />
+                                <rect x="13.5" y="13.5" width="7" height="7" rx="2.2" />
+                            </svg>
+
+                            <template v-else>
+                                {{ categoryIcons[category] }}
+                            </template>
+                        </span>
+
+                        <span class="category-name">
+                            {{ category }}
+                        </span>
                     </button>
 
                 </div>
 
-
-                <!-- =========================
-                     DRINK GRID
-                ========================== -->
 
                 <div class="drink-grid">
 
@@ -297,10 +393,13 @@ const addToCart = (drink) => {
                         <div class="drink-image">
 
                             <span
-                                v-if="drink.popular"
-                                class="popular-badge"
+                                class="badge"
+                                :style="{
+                                    background: getBadge(drink).bg,
+                                    color: getBadge(drink).text
+                                }"
                             >
-                                ⭐ Popular
+                                {{ getBadge(drink).label }}
                             </span>
 
                             <img
@@ -323,10 +422,6 @@ const addToCart = (drink) => {
                         <!-- Drink information -->
 
                         <div class="drink-info">
-
-                            <span class="drink-category">
-                                {{ drink.category }}
-                            </span>
 
                             <div class="drink-title-row">
 
@@ -352,13 +447,15 @@ const addToCart = (drink) => {
                                     class="view-button"
                                 >
                                     View Details
+                                    <span class="view-arrow">→</span>
                                 </Link>
 
                                 <button
                                     class="add-button"
+                                    title="Add to cart"
                                     @click="addToCart(drink)"
                                 >
-                                    +
+                                    🛒
                                 </button>
 
                             </div>
@@ -503,8 +600,21 @@ const addToCart = (drink) => {
 ========================================= */
 
 .menu-navbar {
-    background: #ffffff;
-    border-bottom: 1px solid rgba(23, 37, 29, 0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    width: 100%;
+
+    background: rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 32px rgba(23, 37, 29, 0.08);
+
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .menu-nav-inner {
@@ -524,6 +634,7 @@ const addToCart = (drink) => {
     text-decoration: none;
     letter-spacing: -1.5px;
 }
+
 .drink-real-image {
     width: 100%;
     height: 100%;
@@ -533,7 +644,7 @@ const addToCart = (drink) => {
 
 .menu-logo span,
 .footer-logo span {
-    color: #e85d3f;
+    color: #d3630e;
 }
 
 .menu-links {
@@ -552,7 +663,7 @@ const addToCart = (drink) => {
 
 .menu-link:hover,
 .menu-link.active {
-    color: #e85d3f;
+    color: #12301f;
 }
 
 .menu-link.active::after {
@@ -566,7 +677,7 @@ const addToCart = (drink) => {
 
     height: 2px;
 
-    background: #e85d3f;
+    background: #12301f;
     border-radius: 10px;
 }
 
@@ -604,7 +715,7 @@ const addToCart = (drink) => {
 }
 
 .login-button:hover {
-    background: #e85d3f;
+    background: #12301f;
 }
 
 
@@ -615,7 +726,8 @@ const addToCart = (drink) => {
 .menu-hero {
     position: relative;
 
-    min-height: 390px;
+    min-height: 0;
+    height: clamp(740px, 50vw, 1000px);
 
     display: flex;
     align-items: center;
@@ -624,8 +736,13 @@ const addToCart = (drink) => {
 
     overflow: hidden;
 
-    background: #17251d;
-    color: white;
+    background-color: #ece8df;
+    background-image: url('/images/menu-hero-bg.png');
+    background-size: cover;
+    background-position: right center;
+    background-repeat: no-repeat;
+
+    color: #12301f;
 }
 
 .menu-hero-content {
@@ -640,7 +757,7 @@ const addToCart = (drink) => {
 
     margin-bottom: 18px;
 
-    color: #f4c95d;
+    color: #5f9160;
 
     font-size: 13px;
     font-weight: 800;
@@ -651,53 +768,76 @@ const addToCart = (drink) => {
 .menu-hero h1 {
     margin: 0;
 
+    color: #12301f;
+
     font-size: clamp(50px, 7vw, 88px);
 
     line-height: 0.95;
 
     font-weight: 900;
 
-    letter-spacing: -4px;
+    letter-spacing: -3px;
 }
 
 .menu-hero h1 span {
-    display: block;
-    color: #e85d3f;
+    color: #e85d27;
+}
+
+/* FoldText instances in the hero: className lands on FoldText's own root
+   element (a child component), so :deep() is required for these scoped
+   selectors to reach it. */
+.menu-hero-content :deep(.hero-fold-text) {
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 800;
+}
+
+.menu-hero-content :deep(.hero-fold-text--find) {
+    color: #e162a2;
+}
+
+.menu-hero-content :deep(.hero-fold-text--perfect) {
+    color: #f77810;
 }
 
 .menu-hero p {
-    max-width: 600px;
-
+    max-width: 480px;
     margin-top: 25px;
-
-    color: rgba(255, 255, 255, 0.7);
-
+    color: #5c655e;
     font-size: 18px;
     line-height: 1.7;
 }
 
-.menu-hero-decoration {
-    position: absolute;
-
-    right: 8%;
-    top: 50%;
-
-    transform: translateY(-50%);
-
-    width: 250px;
-    height: 250px;
-
-    display: flex;
+.hero-button {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 12px;
 
-    border-radius: 50%;
+    margin-top: 30px;
 
-    background: #f4c95d;
+    padding: 18px 36px;
 
-    font-size: 130px;
+    border-radius: 999px;
 
-    animation: floatDrink 4s ease-in-out infinite;
+    background: #12301f;
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    box-shadow: 0 10px 25px rgba(18, 48, 31, 0.25);
+
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.hero-button:hover {
+    transform: translateY(-3px);
+    background: #0f2a1c;
+}
+
+.hero-button-arrow {
+    font-size: 18px;
 }
 
 
@@ -707,6 +847,8 @@ const addToCart = (drink) => {
 
 .menu-section {
     padding: 90px 24px;
+
+    scroll-margin-top: 20px;
 }
 
 .menu-container {
@@ -716,10 +858,12 @@ const addToCart = (drink) => {
 
 .category-header {
     display: flex;
-    align-items: end;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
 
     margin-bottom: 35px;
+
+    text-align: center;
 }
 
 .section-label {
@@ -727,9 +871,9 @@ const addToCart = (drink) => {
 
     margin-bottom: 10px;
 
-    color: #e85d3f;
+    color: #5f9160;
 
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 800;
 
     letter-spacing: 0.2em;
@@ -738,16 +882,24 @@ const addToCart = (drink) => {
 .category-header h2 {
     margin: 0;
 
-    font-size: 42px;
+    font-size: 46px;
     font-weight: 900;
 
     letter-spacing: -1.5px;
+    color: #12301f;
+}
+
+.section-subtitle {
+    margin: 12px 0 0;
+
+    color: #6f7a70;
+    font-size: 16px;
 }
 
 .drink-count {
-    margin: 0;
+    margin: 14px 0 0;
 
-    color: #777;
+    color: #8a9089;
     font-size: 14px;
 }
 
@@ -759,24 +911,32 @@ const addToCart = (drink) => {
 .category-buttons {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    justify-content: center;
+    gap: 14px;
 
     margin-bottom: 45px;
 }
 
 .category-button {
-    padding: 12px 20px;
+    width: 168px;
 
-    border: 1px solid rgba(23, 37, 29, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
 
-    border-radius: 999px;
+    padding: 18px 12px;
+
+    border: 2px solid #ece9e0;
+
+    border-radius: 22px;
 
     background: white;
-    color: #17251d;
+    color: #12301f;
 
     font-family: inherit;
 
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
 
     cursor: pointer;
@@ -785,15 +945,55 @@ const addToCart = (drink) => {
 }
 
 .category-button:hover {
-    border-color: #e85d3f;
-    color: #e85d3f;
+    transform: translateY(-4px);
+
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.07);
 }
 
 .category-button.active {
-    border-color: #17251d;
+    border-color: #f0dbcc;
+}
 
-    background: #17251d;
-    color: white;
+.category-icon {
+    width: 84px;
+    height: 84px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f6ece4;
+
+    font-size: 40px;
+    line-height: 1;
+}
+
+.category-button.active .category-icon {
+    background: #f5eadd78;
+    color: #12301f;
+}
+
+.category-image {
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+
+    object-fit: contain;
+    display: block;
+}
+
+.category-icon-all {
+    background: #dcebd9;
+    color: #000000;
+}
+
+.category-all-icon {
+    width: 38px;
+    height: 38px;
+
+    display: block;
 }
 
 
@@ -837,13 +1037,13 @@ const addToCart = (drink) => {
 .drink-image {
     position: relative;
 
-    height: 270px;
+    height: 280px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background: #f8f7f2;
+    background: #f2f0e8;
 
     overflow: hidden;
 }
@@ -851,29 +1051,25 @@ const addToCart = (drink) => {
 .drink-emoji {
     font-size: 125px;
 
-    transition:
-        transform 0.4s ease;
+    transition: transform 0.4s ease;
 }
 
 .menu-drink-card:hover .drink-emoji {
     transform: scale(1.12) rotate(3deg);
 }
 
-.popular-badge {
+.badge {
     position: absolute;
 
     top: 18px;
     left: 18px;
+    z-index: 2;
 
-    padding: 7px 12px;
+    padding: 8px 16px;
 
     border-radius: 999px;
 
-    background: #f4c95d;
-
-    color: #17251d;
-
-    font-size: 11px;
+    font-size: 12.5px;
     font-weight: 800;
 }
 
@@ -886,25 +1082,12 @@ const addToCart = (drink) => {
     padding: 25px;
 }
 
-.drink-category {
-    color: #e85d3f;
-
-    font-size: 11px;
-    font-weight: 800;
-
-    text-transform: uppercase;
-
-    letter-spacing: 0.12em;
-}
-
 .drink-title-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
 
     gap: 15px;
-
-    margin-top: 7px;
 }
 
 .drink-title-row h3 {
@@ -912,15 +1095,16 @@ const addToCart = (drink) => {
 
     font-size: 23px;
     font-weight: 900;
+    color: #12301f;
 }
 
 .drink-price {
     white-space: nowrap;
 
-    color: #e85d3f;
+    color: #1f6f45;
 
-    font-size: 15px;
-    font-weight: 900;
+    font-size: 16px;
+    font-weight: 800;
 }
 
 .drink-info > p {
@@ -928,7 +1112,7 @@ const addToCart = (drink) => {
 
     margin: 10px 0 20px;
 
-    color: #777;
+    color: #7d8580;
 
     font-size: 14px;
     line-height: 1.6;
@@ -948,38 +1132,53 @@ const addToCart = (drink) => {
 .view-button {
     flex: 1;
 
-    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 14px;
 
     border-radius: 999px;
 
-    background: #17251d;
+    background: linear-gradient(135deg, #0f2a1c 0%, #1a4a30 100%);
     color: white;
 
     text-align: center;
     text-decoration: none;
 
-    font-size: 13px;
-    font-weight: 800;
+    font-size: 14px;
+    font-weight: 700;
 
-    transition: background 0.25s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .view-button:hover {
-    background: #e85d3f;
+    opacity: 0.92;
+}
+
+.view-arrow {
+    font-size: 15px;
 }
 
 .add-button {
-    width: 44px;
-    height: 44px;
+    flex-shrink: 0;
+
+    width: 46px;
+    height: 46px;
 
     border: none;
 
     border-radius: 50%;
 
-    background: #e85d3f;
-    color: white;
+    background: #e5ebe2;
+    color: #12301f;
 
-    font-size: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 18px;
     line-height: 1;
 
     cursor: pointer;
@@ -991,7 +1190,7 @@ const addToCart = (drink) => {
 
 .add-button:hover {
     transform: rotate(90deg);
-    background: #17251d;
+    background: #d9e1d6;
 }
 
 
@@ -1041,7 +1240,7 @@ const addToCart = (drink) => {
 
     border-radius: 35px;
 
-    background: #e85d3f;
+    background: #12301f;
 
     color: white;
 }
@@ -1077,16 +1276,15 @@ const addToCart = (drink) => {
 
     border-radius: 999px;
 
-    background: white;
-    color: #e85d3f;
+    background: #f4c95d;
+    color: #12301f;
 
     text-decoration: none;
 
     font-size: 14px;
     font-weight: 800;
 
-    transition:
-        transform 0.25s ease;
+    transition: transform 0.25s ease;
 }
 
 .cta-button:hover {
@@ -1156,7 +1354,7 @@ const addToCart = (drink) => {
 }
 
 .footer-links a:hover {
-    color: #e85d3f;
+    color: #12301f;
 }
 
 .footer-bottom {
@@ -1202,11 +1400,6 @@ const addToCart = (drink) => {
     .drink-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-
-    .menu-hero-decoration {
-        right: 3%;
-        transform: translateY(-50%) scale(0.75);
-    }
 }
 
 
@@ -1229,8 +1422,25 @@ const addToCart = (drink) => {
     }
 
     .menu-hero {
-        min-height: 500px;
+        min-height: 0;
+        height: 800px;
         padding: 70px 25px;
+
+        background-position: 72% center;
+        background-size: cover;
+    }
+
+    .menu-hero::before {
+        content: "";
+
+        position: absolute;
+        inset: 0;
+
+        background: linear-gradient(
+            90deg,
+            rgba(248, 247, 242, 0.85) 0%,
+            rgba(248, 247, 242, 0.35) 100%
+        );
     }
 
     .menu-hero h1 {
@@ -1242,22 +1452,8 @@ const addToCart = (drink) => {
         font-size: 16px;
     }
 
-    .menu-hero-decoration {
-        opacity: 0.25;
-
-        right: -60px;
-
-        transform: translateY(-50%) scale(0.8);
-    }
-
     .menu-section {
         padding: 60px 18px;
-    }
-
-    .category-header {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 10px;
     }
 
     .category-header h2 {
@@ -1267,12 +1463,14 @@ const addToCart = (drink) => {
     .category-buttons {
         overflow-x: auto;
         flex-wrap: nowrap;
+        justify-content: flex-start;
 
-        padding-bottom: 5px;
+        padding-bottom: 8px;
     }
 
     .category-button {
         flex-shrink: 0;
+        width: 140px;
     }
 
     .drink-grid {
