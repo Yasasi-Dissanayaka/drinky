@@ -1,5 +1,6 @@
 <script setup>
 import { Head, Link } from '@inertiajs/vue3'
+import { ref } from 'vue'
 import VideoBanner from './VideoBanner.vue'
 import Navbar from './Navbar.vue'
 
@@ -61,13 +62,43 @@ const featuredDrinks = [
 ]
 
 const carouselDrinks = [
-    { name: 'Orange Juice', image: '/images/Orng.png', hoverImage: '/images/Orange.png' },
-    { name: 'Blueberry Juice', image: '/images/Bb.png', hoverImage: '/images/Blue Berry.png' },
-    { name: 'Lemon Juice', image: '/images/Lime.png', hoverImage: '/images/Lemon.png' },
-    { name: 'Strawberry Juice', image: '/images/Strwbry.png', hoverImage: '/images/Strawberry.png' },
-    { name: 'Mango Juice', image: '/images/Mang.png', hoverImage: '/images/Mango.png' },
-    { name: 'Berry Juice', image: '/images/Mb.png', hoverImage: '/images/Mix Berry.png' },
+    { id: 101, name: 'Orange Juice', image: '/images/Orng.png', hoverImage: '/images/Orange.png', price: 350, description: 'Refreshing and rich in vitamin C, made from real oranges for a naturally fruity taste.', color: '#ff6900', curveClass: 'orange', curvePath: 'M0 24 C110 -24 222 25 300 168' },
+    { id: 102, name: 'Blueberry Juice', image: '/images/Bb.png', hoverImage: '/images/Blue Berry.png', price: 400, description: 'A bright, delicious berry blend made with juicy blueberries.', color: '#9873ee' },
+    { id: 103, name: 'Lemon Juice', image: '/images/Lime.png', hoverImage: '/images/Lemon.png', price: 350, description: 'A zesty lemon refresh with a sunny, naturally tangy taste.', color: '#f4e9be', curveClass: 'lemon' },
+    { id: 104, name: 'Strawberry Juice', image: '/images/Strwbry.png', hoverImage: '/images/Strawberry.png', price: 400, description: 'Sweet, vibrant strawberries make every sip extra refreshing.', color: '#f35b8d' },
+    { id: 105, name: 'Mango Juice', image: '/images/Mang.png', hoverImage: '/images/Mango.png', price: 400, description: 'A smooth tropical mango treat, bursting with sunny fruit flavor.', color: '#ffad22', curveClass: 'mango', curvePath: 'M0 0 C92 -48 218 10 300 178' },
+    { id: 106, name: 'Berry Juice', image: '/images/Mb.png', hoverImage: '/images/Mix Berry.png', price: 400, description: 'A lively mix of berries for a sweet and tangy fruity sip.', color: '#ef7197' },
 ]
+
+const activeFlavor = ref(null)
+
+function addFlavorToCart(drink) {
+    const cart = JSON.parse(localStorage.getItem('drinky_cart') || '[]')
+    const existingItem = cart.find(item => item.id === drink.id)
+
+    if (existingItem) {
+        existingItem.quantity++
+    } else {
+        cart.push({
+            id: drink.id,
+            name: drink.name,
+            category: 'Fresh Juices',
+            price: drink.price,
+            quantity: 1,
+            icon: '🍹',
+        })
+    }
+
+    localStorage.setItem('drinky_cart', JSON.stringify(cart))
+    window.location.href = '/cart'
+}
+
+function handleFlavorClick(event, index) {
+    if (window.matchMedia('(max-width: 767px)').matches) {
+        event.preventDefault()
+        activeFlavor.value = activeFlavor.value === index ? null : index
+    }
+}
 </script>
 
 <template>
@@ -345,18 +376,39 @@ const carouselDrinks = [
                     <p class="flavor-subtitle">Fresh flavors, colorful moments. Find your perfect sip.</p>
                 </div>
 
-                <div class="flavor-accordion" aria-label="Explore Drinky flavors">
+                <div class="flavor-accordion" :class="{ 'has-active-flavor': activeFlavor !== null }" aria-label="Explore Drinky flavors" @mouseleave="activeFlavor = null">
                     <a
                         v-for="(drink, index) in carouselDrinks"
                         :key="drink.name"
                         class="flavor-panel"
                         :href="`/menu/${encodeURIComponent(drink.name.toLowerCase().replaceAll(' ', '-'))}`"
                         :aria-label="`Explore ${drink.name}`"
-                        :style="{ '--panel-index': index }"
+                        :class="{ 'is-expanded': activeFlavor === index }"
+                        :style="{ '--panel-index': index, '--panel-color': drink.color }"
+                        @mouseenter="activeFlavor = index"
+                        @focus="activeFlavor = index"
+                        @click="handleFlavorClick($event, index)"
                     >
                         <span class="flavor-image-stack" aria-hidden="true">
                             <img :src="drink.image" alt="" class="flavor-image flavor-image-primary" draggable="false" />
                             <img :src="drink.hoverImage" alt="" class="flavor-image flavor-image-hover" draggable="false" />
+                        </span>
+                        <span class="flavor-details" @click.stop>
+                            <span class="flavor-description">{{ drink.description }}</span>
+                            <span class="flavor-purchase">
+                                <span class="flavor-price">Rs. {{ drink.price }} /=</span>
+                                <button type="button" class="flavor-buy-button" @click="addFlavorToCart(drink)">
+                                    <span>🛒</span> Buy now <span class="flavor-buy-arrow">›</span>
+                                </button>
+                            </span>
+                            <svg v-if="drink.id === 101" class="flavor-curved-title flavor-orange-curve" viewBox="0 0 300 180" aria-hidden="true">
+                                <defs><path id="orange-flavor-arc" d="M8 20 C95 -10 168 18 218 66 S278 130 294 170" /></defs>
+                                <text><textPath href="#orange-flavor-arc" startOffset="45%" text-anchor="middle">{{ drink.name }}</textPath></text>
+                            </svg>
+                            <svg v-else class="flavor-curved-title" :class="drink.curveClass ? `flavor-curved-title--${drink.curveClass}` : ''" viewBox="0 0 300 180" aria-hidden="true">
+                                <defs><path :id="`flavor-arc-${drink.id}`" :d="drink.curvePath || 'M10 24 C118 -8 214 28 286 158'" /></defs>
+                                <text><textPath :href="`#flavor-arc-${drink.id}`" startOffset="50%" text-anchor="middle">{{ drink.name }}</textPath></text>
+                            </svg>
                         </span>
                         <span class="sr-only">{{ drink.name }}</span>
                         <span class="flavor-name">{{ drink.name }}</span>
@@ -1021,11 +1073,12 @@ a:focus-visible {
     flex-basis: 0;
     height: 100%;
     overflow: hidden;
-    transition: flex-grow 650ms cubic-bezier(0.22, 1, 0.36, 1);
+    transition: flex-grow 520ms ease-in-out;
 }
 
 .flavor-panel:hover,
-.flavor-panel:focus-visible {
+.flavor-panel:focus-visible,
+.flavor-panel.is-expanded {
     flex-grow: 3;
     flex-basis: 0;
     z-index: 1;
@@ -1049,7 +1102,7 @@ a:focus-visible {
     height: 100%;
     object-fit: cover;
     object-position: center;
-    transition: opacity 350ms ease;
+    transition: opacity 480ms ease-in-out;
 }
 
 .flavor-image-primary {
@@ -1091,7 +1144,140 @@ a:focus-visible {
 
 .flavor-panel:hover .flavor-name,
 .flavor-panel:focus-visible .flavor-name {
+    opacity: 0;
+}
+
+.flavor-details {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: block;
+    color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 450ms ease-in-out;
+}
+
+.flavor-panel:hover .flavor-details,
+.flavor-panel:focus-visible .flavor-details,
+.flavor-panel.is-expanded .flavor-details {
     opacity: 1;
+    pointer-events: auto;
+}
+
+.flavor-description {
+    position: absolute;
+    top: 12%;
+    left: 4%;
+    width: 27%;
+    max-width: 240px;
+    font-size: clamp(13px, 1vw, 17px);
+    font-weight: 900;
+    line-height: 1.55;
+    text-transform: uppercase;
+    text-shadow: 0 2px 8px rgba(75, 38, 0, 0.18);
+}
+
+.flavor-purchase {
+    position: absolute;
+    top: 11%;
+    right: 4%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 9px;
+    min-width: 0;
+}
+
+.flavor-price {
+    font-size: clamp(20px, 2vw, 34px);
+    font-weight: 900;
+    line-height: 1;
+    white-space: nowrap;
+    text-shadow: 0 2px 8px rgba(75, 38, 0, 0.18);
+}
+
+.flavor-buy-button {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border: 1px solid rgba(255, 255, 255, .9);
+    border-radius: 999px;
+    padding: 8px 9px 8px 16px;
+    background: #fff;
+    box-shadow: 0 8px 18px rgba(35, 28, 20, .18);
+    color: var(--panel-color, #ffb82e);
+    font: inherit;
+    font-size: clamp(15px, 1.15vw, 19px);
+    font-weight: 800;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+}
+
+.flavor-buy-button:hover {
+    filter: brightness(.96);
+    transform: translateY(-2px);
+    box-shadow: 0 11px 22px rgba(35, 28, 20, .22);
+}
+
+.flavor-buy-button > span:first-child {
+    display: none;
+}
+
+.flavor-buy-button:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(35, 28, 20, .18);
+}
+
+.flavor-buy-arrow {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .95);
+    color: var(--panel-color, #ee8c00);
+    font-size: 25px;
+    line-height: 1;
+}
+
+.flavor-curved-title {
+    position: absolute;
+    top: 47%;
+    right: 6%;
+    width: min(34%, 360px);
+    height: 39%;
+    overflow: visible;
+    fill: white;
+    font-size: 30px;
+    font-weight: 900;
+    text-shadow: 0 2px 8px rgba(75, 38, 0, 0.3);
+}
+
+.flavor-orange-curve {
+    top: 41%;
+    right: 5%;
+    width: min(38%, 410px);
+    height: 48%;
+    font-size: 32px;
+    transform: translateX(36px) rotate(-6deg);
+    transform-origin: 60% 50%;
+}
+
+.flavor-curved-title--mango {
+    top: 42%;
+    right: 4%;
+    width: min(36%, 380px);
+    height: 42%;
+    font-size: 31px;
+    transform: rotate(-2deg);
+    transform-origin: 55% 45%;
+}
+
+.flavor-curved-title--lemon {
+    top: 50%;
+    right: -1%;
 }
 
 .sr-only {
@@ -1140,23 +1326,59 @@ a:focus-visible {
 
     .flavor-panel,
     .flavor-panel:hover,
-    .flavor-panel:focus-visible {
+    .flavor-panel:focus-visible,
+    .flavor-panel.is-expanded {
         flex: 0 0 100%;
         min-width: 0;
         scroll-snap-align: start;
     }
 
-    .flavor-image-primary {
-        object-fit: contain;
-    }
-
-    .flavor-image-hover {
-        object-fit: contain;
-    }
+    .flavor-image-primary,
+    .flavor-image-hover { object-fit: cover; }
 
     .flavor-name {
         opacity: 1;
     }
+
+    .flavor-panel.is-expanded {
+        flex-basis: 100%;
+    }
+
+    .flavor-details {
+        display: block;
+    }
+
+    .flavor-description {
+        top: 12%;
+        left: 4%;
+        width: 30%;
+        max-width: 150px;
+        font-size: clamp(12px, 3.2vw, 16px);
+        line-height: 1.4;
+    }
+
+    .flavor-purchase {
+        top: 8%;
+        right: 4%;
+        min-width: 0;
+        gap: 8px;
+    }
+
+    .flavor-price { font-size: clamp(20px, 5vw, 30px); }
+    .flavor-buy-button { gap: 7px; padding: 8px 9px 8px 12px; font-size: 13px; }
+    .flavor-buy-arrow { width: 26px; height: 26px; font-size: 22px; }
+
+    .flavor-curved-title {
+        top: 50%;
+        right: 7%;
+        width: 52%;
+        height: 36%;
+        font-size: 21px;
+    }
+
+    .flavor-curved-title--mango { top: 45%; right: 7%; width: 52%; height: 39%; font-size: 21px; transform: rotate(-2deg); }
+    .flavor-curved-title--lemon { top: 53%; right: 1%; }
+    .flavor-orange-curve { top: 43%; right: 5%; width: 56%; height: 44%; font-size: 25px; transform: translateX(20px) rotate(-5deg); }
 
     .flavor-panel:active .flavor-image-hover,
     .flavor-panel:focus .flavor-image-hover {
@@ -1183,6 +1405,7 @@ a:focus-visible {
     .flavor-name {
         transition: none;
     }
+    .flavor-details { transition: none; }
 }
 
 .hero-tag-arrow {
